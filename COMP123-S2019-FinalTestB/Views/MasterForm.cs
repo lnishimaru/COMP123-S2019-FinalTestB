@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace COMP123_S2019_FinalTestB
+namespace COMP123_S2019_FinalTestB.Views
 {
-    public partial class Form1 : Form
+    public partial class MasterForm : Form
     {
-        public Form1()
+        public MasterForm()
         {
             InitializeComponent();
         }
