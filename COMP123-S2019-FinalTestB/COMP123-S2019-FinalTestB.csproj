@@ -51,11 +51,11 @@
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\CharacterGenerationForm.cs">
+    <Compile Include="Views\CharacterGeneratorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\CharacterGenerationForm.Designer.cs">
-      <DependentUpon>CharacterGenerationForm.cs</DependentUpon>
+    <Compile Include="Views\CharacterGeneratorForm.Designer.cs">
+      <DependentUpon>CharacterGeneratorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\MasterForm.cs">
       <SubType>Form</SubType>
@@ -72,8 +72,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Views\CharacterGenerationForm.resx">
-      <DependentUpon>CharacterGenerationForm.cs</DependentUpon>
+    <EmbeddedResource Include="Views\CharacterGeneratorForm.resx">
+      <DependentUpon>CharacterGeneratorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MasterForm.resx">
       <DependentUpon>MasterForm.cs</DependentUpon>
