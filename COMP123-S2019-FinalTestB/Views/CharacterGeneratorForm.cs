@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 /*
@@ -66,14 +67,21 @@ namespace COMP123_S2019_FinalTestB.Views
                     try
                     {
                         //read file
-                        //Program.computers.ProductID = int.Parse(inputStream.ReadLine());
-                        //Program.computers.Cost = double.Parse(inputStream.ReadLine());
-                        //Program.computers.Condition = inputStream.ReadLine();
-
+                        Program.character.FirstName = inputStream.ReadLine();
+                        Program.character.LastName = inputStream.ReadLine();
+                        CharacterNameTextBox.Text = Program.character.FirstName + " " + Program.character.LastName;
+                        Program.character.Strength = inputStream.ReadLine();
+                        Program.character.Dexterity = inputStream.ReadLine();
+                        Program.character.Constitution = inputStream.ReadLine();
+                        Program.character.Intelligence = inputStream.ReadLine();
+                        Program.character.Wisdom = inputStream.ReadLine();
+                        Program.character.Charisma = inputStream.ReadLine();
+                        
                         inputStream.Close();
                         inputStream.Dispose();
 
-                        //ProductInfoForm_Activated(sender, e);
+                        MainTabControl_SelectedIndexChanged(sender, e);
+                        
                     }
                     catch (IOException exception)
                     {
@@ -91,16 +99,41 @@ namespace COMP123_S2019_FinalTestB.Views
         /// <param name="e"></param>
         private void GenerateNameButton_Click(object sender, EventArgs e)
         {
-            Random rnd = new Random();
+            GenerateNames();
+        }
 
+        private void LoadNames()
+        {
             // load the list of first names 
-            using (StreamReader inputStream = new StreamReader(
-               File.Open("firstNames.txt", FileMode.Open)))
+
+            
+             using (StreamReader inputStream = new StreamReader(
+               File.Open("..\\..\\Data\\firstNames.txt", FileMode.Open)))
             {
                 //read file
                 string[] firstNames = inputStream.ReadToEnd().Split();
-                int indFirst = rnd.Next(0, firstNames.Length);
-                FirstNameDataLabel.Text = firstNames[indFirst];
+                Program.character.FirstNameList = firstNames.ToList();
+
+                try
+                {
+                    inputStream.Close();
+                    inputStream.Dispose();
+                }
+                catch (IOException exception)
+                {
+                    MessageBox.Show("Error: " + exception.Message, "File I/O Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            } 
+
+            // load the list of last names
+            using (StreamReader inputStream = new StreamReader(
+               File.Open("..\\..\\Data\\lastNames.txt", FileMode.Open)))
+            {
+                //read file
+                string[] lastNames = inputStream.ReadToEnd().Split();
+                Program.character.LastNameList = lastNames.ToList();
+
                 try
                 {
                     inputStream.Close();
@@ -112,15 +145,21 @@ namespace COMP123_S2019_FinalTestB.Views
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            
-            // load the list of last names
+        }
+        /// <summary>
+        /// This method loads the inventory file 
+        /// </summary>
+        private void LoadInventory()
+        {
+            // load the list of items
+
             using (StreamReader inputStream = new StreamReader(
-               File.Open("lastNames.txt", FileMode.Open)))
+              File.Open("..\\..\\Data\\inventory.txt", FileMode.Open)))
             {
                 //read file
-                string[] lastNames = inputStream.ReadToEnd().Split();
-                int indLast = rnd.Next(0, lastNames.Length);
-                LastNameDataLabel.Text = lastNames[indLast];
+                string [] inventory = inputStream.ReadToEnd().Split();
+                Program.character.Inventory = inventory.ToList();
+
                 try
                 {
                     inputStream.Close();
@@ -155,10 +194,15 @@ namespace COMP123_S2019_FinalTestB.Views
                     File.Open(CharacterSaveFileDialog.FileName, FileMode.Create)))
                 {
                     //write file
-                    //outputString.WriteLine(Program.computers.ProductID);
-                    //outputString.WriteLine(Program.computers.Cost.ToString());
-                    //outputString.WriteLine(Program.computers.Condition);
-                    
+                    outputString.WriteLine(Program.character.FirstName);
+                    outputString.WriteLine(Program.character.LastName);
+                    outputString.WriteLine(Program.character.Strength);
+                    outputString.WriteLine(Program.character.Dexterity);
+                    outputString.WriteLine(Program.character.Constitution);
+                    outputString.WriteLine(Program.character.Intelligence);
+                    outputString.WriteLine(Program.character.Wisdom);
+                    outputString.WriteLine(Program.character.Charisma);
+
                     //close file
                     outputString.Close();
 
@@ -173,5 +217,88 @@ namespace COMP123_S2019_FinalTestB.Views
         {
             Program.aboutBox.ShowDialog();
         }
+        /// <summary>
+        /// Event handler for loading the Character Generator Form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CharacterGeneratorForm_Load(object sender, EventArgs e)
+        {
+            LoadNames();
+            LoadInventory();
+        }
+        private void GenerateNames()
+        {
+            Random rnd = new Random();
+            int indFirst = rnd.Next(0, Program.character.FirstNameList.Count);
+            FirstNameDataLabel.Text = Program.character.FirstNameList[indFirst];
+            int indLast = rnd.Next(0, Program.character.LastNameList.Count);
+            LastNameDataLabel.Text = Program.character.LastNameList[indLast];
+            CharacterNameTextBox.Text = FirstNameDataLabel.Text + " " + LastNameDataLabel.Text;
+        }
+
+        private void GenerateAbilitiesButton_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            Program.character.Strength = rnd.Next(3, 18).ToString();
+            Program.character.Dexterity = rnd.Next(3, 18).ToString();
+            Program.character.Constitution = rnd.Next(3, 18).ToString();
+            Program.character.Intelligence = rnd.Next(3, 18).ToString();
+            Program.character.Wisdom = rnd.Next(3, 18).ToString();
+            Program.character.Charisma = rnd.Next(3, 18).ToString();
+            StrengthDataLabel.Text = Program.character.Strength;
+            DexterityDataLabel.Text = Program.character.Dexterity;
+            ConstitutionDataLabel.Text = Program.character.Constitution;
+            IntelligenceDataLabel.Text = Program.character.Intelligence;
+            WisdomDataLabel.Text = Program.character.Wisdom;
+            CharismaDataLabel.Text = Program.character.Charisma;
+        }
+
+        private void GenerateInventoryButton_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            int indItem = rnd.Next(0, Program.character.Inventory.Count);
+            InventoryItemDataLabel1.Text = Program.character.Inventory[indItem];
+            indItem = rnd.Next(0, Program.character.Inventory.Count);
+            InventoryItemDataLabel2.Text = Program.character.Inventory[indItem];
+            indItem = rnd.Next(0, Program.character.Inventory.Count);
+            InventoryItemDataLabel3.Text = Program.character.Inventory[indItem];
+            indItem = rnd.Next(0, Program.character.Inventory.Count);
+            InventoryItemDataLabel4.Text = Program.character.Inventory[indItem];
+        }
+
+        private void Label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (MainTabControl.SelectedIndex == 3)
+            {
+                HeroNameDataLabel.Text = CharacterNameTextBox.Text;
+                StrSheetDataLabel.Text = Program.character.Strength;
+                DexSheetDataLabel.Text = Program.character.Dexterity;
+                ConsSheetDataLabel.Text = Program.character.Constitution;
+                IntSheetDataLabel.Text = Program.character.Intelligence;
+                WisSheetDataLabel.Text = Program.character.Wisdom;
+                ChaSheetDataLabel.Text = Program.character.Charisma;
+                Item1SheetDataLabel.Text = InventoryItemDataLabel1.Text;
+                Item2SheetDataLabel.Text = InventoryItemDataLabel2.Text;
+                Item3SheetDataLabel.Text = InventoryItemDataLabel3.Text;
+                Item4SheetDataLabel.Text = InventoryItemDataLabel4.Text;
+            }
+        }
     }
+   
 }

@@ -27,12 +27,17 @@ namespace COMP123_S2019_FinalTestB.Objects
         //Character Class
         public CharacterClass Class { get; set; }
         public int Level { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public List<string> FirstNameList;
+        public List<string> LastNameList;
         //Equipment
-        List<Item> Inventory;
+        public List<string> Inventory;
         //Constructor method
-        Character()
+        public Character()
         {
-            this.Inventory = new List<Item>();
+            this.Inventory = new List<string>();
         }
     }
 }
