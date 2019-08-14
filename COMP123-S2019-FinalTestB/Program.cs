@@ -14,7 +14,8 @@ namespace COMP123_S2019_FinalTestB
     public static class Program
     {
         // temporary
-        public static CharacterGeneratorForm characterForm; 
+        public static CharacterGeneratorForm characterForm;
+        public static AboutForm aboutBox;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -24,7 +25,8 @@ namespace COMP123_S2019_FinalTestB
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            characterForm = new CharacterGeneratorForm(); 
+            characterForm = new CharacterGeneratorForm();
+            aboutBox = new AboutForm();
 
             Application.Run(characterForm);
         }
